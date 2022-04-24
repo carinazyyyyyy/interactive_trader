@@ -200,26 +200,23 @@ def async_handler(async_status, master_client_id, port, hostname):
     Output('placeholder-div', 'children'),
     [
         Input('trade-button', 'n_clicks'),
-        Input('contract-symbol', 'value'),
-        #Input('contract-sec-type', 'value'),
-        Input('contract_strike','value'),
-        #input('contract_right','value'),
-        Input('contract-currency', 'value'),
-        #input('contract_lastTradeDay','value'),
-        #Input('contract-exchange', 'value'),
-        #Input('contract-primary-exchange', 'value'),
-        Input('order-action', 'value'),
-        Input('order-type', 'value'),
-        Input('order-size', 'value'),
-        Input('order-lmt-price', 'value'),
-        Input('order-account', 'value')
+        # Input('contract-symbol', 'value'),
+        # #Input('contract-sec-type', 'value'),
+        # #Input('contract_strike','value'),
+        # #input('contract_right','value'),
+        # #Input('contract-currency', 'value'),
+        # #input('contract_lastTradeDay','value'),
+        # #Input('contract-exchange', 'value'),
+        # #Input('contract-primary-exchange', 'value'),
+        # Input('order-action', 'value'),
+        # Input('order-type', 'value'),
+        # Input('order-size', 'value'),
+        # Input('order-lmt-price', 'value'),
+        # Input('order-account', 'value')
     ],
     prevent_initial_call = True
 )
-def place_order(n_clicks, contract_symbol, contract_strike,
-                contract_currency,
-                order_action, order_type,
-                order_size, order_lmt_price, order_account):
+def place_order(n_clicks):
 
     # Contract object: STOCK
     # contract = Contract()
@@ -229,46 +226,70 @@ def place_order(n_clicks, contract_symbol, contract_strike,
     # contract.exchange = contract_exchange
     # contract.primaryExchange = contract_primary_exchange
 
-    contract = Contract()
-    contract.Symbol = contract_symbol
-    contract.SecType = "OPT"
-    contract.Exchange = "BOX"
-    contract.Currency = contract_currency
-    #contract.LastTradeDateOrContractMonth = contract_lastTradeDay
-    contract.Strike = contract_strike
-    contract.Right = "c"
-    contract.Multiplier = "100"
+    AAPL_call_contract = Contract()
+    AAPL_call_contract.symbol = "AAPL"
+    AAPL_call_contract.secType = "OPT"
+    AAPL_call_contract.exchange = "BOX"
+    AAPL_call_contract.currency = "USD"
+    AAPL_call_contract.lastTradeDateOrContractMonth = "20220422"
+    AAPL_call_contract.strike = "160"
+    AAPL_call_contract.right = "C"
+    AAPL_call_contract.multiplier = "100"
 
-    contract1 = Contract()
-    contract1.Symbol = contract_symbol
-    contract1.SecType = "OPT"
-    contract1.Exchange = "BOX"
-    contract1.Currency = contract_currency
-    #contract1.LastTradeDateOrContractMonth = contract_lastTradeDay
-    contract1.Strike = contract_strike
-    contract1.Right = "p"
-    contract1.Multiplier = "100"
+    AAPL_put_contract = Contract()
+    AAPL_put_contract.symbol = "AAPL"
+    AAPL_put_contract.secType = "OPT"
+    AAPL_put_contract.exchange = "BOX"
+    AAPL_put_contract.currency = "USD"
+    AAPL_put_contract.lastTradeDateOrContractMonth = "20220422"
+    AAPL_put_contract.strike = "160"
+    AAPL_put_contract.right = "P"
+    AAPL_put_contract.multiplier = "100"
+
+    ADBE_call_contract = Contract()
+    ADBE_call_contract.symbol = "ADBE"
+    ADBE_call_contract.secType = "OPT"
+    ADBE_call_contract.exchange = "BOX"
+    ADBE_call_contract.currency = "USD"
+    ADBE_call_contract.lastTradeDateOrContractMonth = "20220422"
+    ADBE_call_contract.strike = "405"
+    ADBE_call_contract.right = "C"
+    ADBE_call_contract.multiplier = "100"
+
+    ADBE_put_contract = Contract()
+    ADBE_put_contract.symbol = "ADBE"
+    ADBE_put_contract.secType = "OPT"
+    ADBE_put_contract.exchange = "BOX"
+    ADBE_put_contract.currency = "USD"
+    ADBE_put_contract.lastTradeDateOrContractMonth = "20220422"
+    ADBE_put_contract.strike = "405"
+    ADBE_put_contract.right = "P"
+    ADBE_put_contract.multiplier = "100"
 
     # Example LIMIT Order
-    order = Order()
-    order.action = order_action
-    order.orderType = order_type
-    order.totalQuantity = order_size
+    buy_order = Order()
+    buy_order.action = "BUY"
+    buy_order.orderType = "MKT"
+    buy_order.totalQuantity = 100
 
-    if order_type == 'LMT':
-        order.lmtPrice = order_lmt_price
+    sell_order = Order()
+    sell_order.action = "SELL"
+    sell_order.orderType = "MKT"
+    sell_order.totalQuantity = 100
 
-    if order_account:
-        order.account = order_account
+    # if order_type == 'LMT':
+    #     order.lmtPrice = order_lmt_price
+    #
+    # if order_account:
+    #     order.account = order_account
 
     ibkr_async_conn.reqIds(1)
 
     # Place orders!
-    ibkr_async_conn.placeOrder(
-        ibkr_async_conn.next_valid_id,
-        contract,
-        order
-    )
+    ibkr_async_conn.placeOrder(ibkr_async_conn.next_valid_id, AAPL_call_contract, buy_order)
+    ibkr_async_conn.placeOrder(ibkr_async_conn.next_valid_id, AAPL_put_contract, buy_order)
+    ibkr_async_conn.placeOrder(ibkr_async_conn.next_valid_id, ADBE_call_contract, sell_order)
+    ibkr_async_conn.placeOrder(ibkr_async_conn.next_valid_id, ADBE_put_contract, sell_order)
 
     return ''
 

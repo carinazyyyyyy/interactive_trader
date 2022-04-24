@@ -10,26 +10,38 @@ client_id = 10645 # can set and use your Master Client ID
 value = "EUR.USD" # This is what your text input looks like on your app
 
 # Contract object: CURRENCY PAIR
-contract_cp = Contract()
-contract_cp.symbol = 'EUR'
-contract_cp.secType  = 'CASH'
-contract_cp.exchange = 'IDEALPRO'  # 'IDEALPRO' is the currency exchange.
-contract_cp.currency = 'USD'
-
-# Contract object: STOCK
-contract_stk = Contract()
-contract_stk.symbol = "TSLA"
-contract_stk.secType = "STK"
-contract_stk.currency = "USD"
-contract_stk.exchange = "SMART"
-contract_stk.primaryExchange = "ARCA"
+# contract_cp = Contract()
+# contract_cp.symbol = 'EUR'
+# contract_cp.secType  = 'CASH'
+# contract_cp.exchange = 'IDEALPRO'  # 'IDEALPRO' is the currency exchange.
+# contract_cp.currency = 'USD'
+#
+# # Contract object: STOCK
+# contract_stk = Contract()
+# contract_stk.symbol = "TSLA"
+# contract_stk.secType = "STK"
+# contract_stk.currency = "USD"
+# contract_stk.exchange = "SMART"
+# contract_stk.primaryExchange = "ARCA"
 
 # Contract object: CRYPTO
-contract_crypto = Contract();
-contract_crypto.symbol = "ETH"
-contract_crypto.secType = "CRYPTO"
-contract_crypto.currency = "USD"
-contract_crypto.exchange = "PAXOS"
+# contract_crypto = Contract();
+# contract_crypto.symbol = "ETH"
+# contract_crypto.secType = "CRYPTO"
+# contract_crypto.currency = "USD"
+# contract_crypto.exchange = "PAXOS"
+
+# Contract object: OPTION
+contract = Contract()
+contract.symbol = "AAPL"
+contract.secType = "OPT"
+contract.exchange = "BOX"
+contract.currency = "USD"
+contract.lastTradeDateOrContractMonth = "20220422"
+contract.strike = "160"
+contract.right = "C"
+contract.multiplier = "100"
+
 
 # Example MARKET Order
 mkt_order = Order()
@@ -39,7 +51,7 @@ mkt_order.totalQuantity = 100
 
 # Example LIMIT Order
 lmt_order = Order()
-lmt_order.action = "SELL"
+lmt_order.action = "BUY"
 lmt_order.orderType = "LMT"
 lmt_order.totalQuantity = 100
 lmt_order.lmtPrice = 1120
@@ -59,14 +71,16 @@ lmt_order.account = 'DU1267861'
 # client who only trades index funds and dividend-paying stocks in the SP500!
 
 # Place orders!
-order_response_stk_lmt = place_order(contract_stk, lmt_order)
-order_response_cp_mkt = place_order(contract_cp, mkt_order)
-order_response_crypto_mkt = place_order(contract_crypto, mkt_order)
+# order_response_stk_lmt = place_order(contract_stk, lmt_order)
+# order_response_cp_mkt = place_order(contract_cp, mkt_order)
+# order_response_crypto_mkt = place_order(contract_crypto, mkt_order)
+order_response_option_mkt = place_order(contract, mkt_order)
 
 # Print the info returned by placing orders:
-print(order_response_stk_lmt)
-print(order_response_crypto_mkt)
-print(order_response_cp_mkt)
+# print(order_response_stk_lmt)
+# print(order_response_crypto_mkt)
+# print(order_response_cp_mkt)
+print(order_response_option_mkt)
 
 # You can select what you want from the response, for example:
-print(order_response_cp_mkt['perm_id'])
+# print(order_response_cp_mkt['perm_id'])

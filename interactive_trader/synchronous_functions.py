@@ -229,8 +229,8 @@ def fetch_matching_symbols(pattern, hostname=default_hostname,
 
     return app.matching_symbols
 
-def place_order(contract, contract1, order, hostname=default_hostname,
-                           port=default_port, client_id=default_client_id):
+def place_order(contract, order, hostname=default_hostname,
+                port=default_port, client_id=default_client_id):
 
     app = ibkr_app()
     app.connect(hostname, port, client_id)
@@ -246,7 +246,8 @@ def place_order(contract, contract1, order, hostname=default_hostname,
     while app.next_valid_id is None:
         time.sleep(0.01)
 
-    app.placeOrder(app.next_valid_id, contract,contract1, order)
+    app.placeOrder(app.next_valid_id, contract, order)
+
     while not ('Submitted' in set(app.order_status['status'])):
         time.sleep(0.25)
 
