@@ -83,7 +83,7 @@ def fetch_current_time(hostname=default_hostname,
     return app.current_time
 
 
-def fetch_historical_data(contract, endDateTime='', durationStr='30 D',
+def fetch_historical_data(contract, contract1, endDateTime='', durationStr='30 D',
                           barSizeSetting='1 hour', whatToShow='MIDPOINT',
                           useRTH=True, hostname=default_hostname,
                           port=default_port, client_id=default_client_id):
@@ -116,7 +116,7 @@ def fetch_historical_data(contract, endDateTime='', durationStr='30 D',
             )
     tickerId = app.next_valid_id
     app.reqHistoricalData(
-        tickerId, contract, endDateTime, durationStr, barSizeSetting,
+        tickerId, contract, contract1, endDateTime, durationStr, barSizeSetting,
         whatToShow, useRTH, formatDate=1, keepUpToDate=False, chartOptions=[])
     start_time = datetime.now()
     while app.historical_data_end != tickerId:
@@ -131,7 +131,7 @@ def fetch_historical_data(contract, endDateTime='', durationStr='30 D',
     app.disconnect()
     return app.historical_data
 
-def fetch_contract_details(contract, hostname=default_hostname,
+def fetch_contract_details(contract, contract1, hostname=default_hostname,
                            port=default_port, client_id=default_client_id):
     app = ibkr_app()
     app.connect(hostname, int(port), int(client_id))
@@ -229,7 +229,7 @@ def fetch_matching_symbols(pattern, hostname=default_hostname,
 
     return app.matching_symbols
 
-def place_order(contract, order, hostname=default_hostname,
+def place_order(contract, contract1, order, hostname=default_hostname,
                            port=default_port, client_id=default_client_id):
 
     app = ibkr_app()
@@ -246,7 +246,7 @@ def place_order(contract, order, hostname=default_hostname,
     while app.next_valid_id is None:
         time.sleep(0.01)
 
-    app.placeOrder(app.next_valid_id, contract, order)
+    app.placeOrder(app.next_valid_id, contract,contract1, order)
     while not ('Submitted' in set(app.order_status['status'])):
         time.sleep(0.25)
 

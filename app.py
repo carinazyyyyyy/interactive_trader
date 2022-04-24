@@ -201,10 +201,13 @@ def async_handler(async_status, master_client_id, port, hostname):
     [
         Input('trade-button', 'n_clicks'),
         Input('contract-symbol', 'value'),
-        Input('contract-sec-type', 'value'),
+        #Input('contract-sec-type', 'value'),
+        Input('contract_strike','value'),
+        #input('contract_right','value'),
         Input('contract-currency', 'value'),
-        Input('contract-exchange', 'value'),
-        Input('contract-primary-exchange', 'value'),
+        #input('contract_lastTradeDay','value'),
+        #Input('contract-exchange', 'value'),
+        #Input('contract-primary-exchange', 'value'),
         Input('order-action', 'value'),
         Input('order-type', 'value'),
         Input('order-size', 'value'),
@@ -213,18 +216,38 @@ def async_handler(async_status, master_client_id, port, hostname):
     ],
     prevent_initial_call = True
 )
-def place_order(n_clicks, contract_symbol, contract_sec_type,
-                contract_currency, contract_exchange,
-                contract_primary_exchange, order_action, order_type,
+def place_order(n_clicks, contract_symbol, contract_strike,
+                contract_currency,
+                order_action, order_type,
                 order_size, order_lmt_price, order_account):
 
     # Contract object: STOCK
+    # contract = Contract()
+    # contract.symbol = contract_symbol
+    # contract.secType = contract_sec_type
+    # contract.currency = contract_currency
+    # contract.exchange = contract_exchange
+    # contract.primaryExchange = contract_primary_exchange
+
     contract = Contract()
-    contract.symbol = contract_symbol
-    contract.secType = contract_sec_type
-    contract.currency = contract_currency
-    contract.exchange = contract_exchange
-    contract.primaryExchange = contract_primary_exchange
+    contract.Symbol = contract_symbol
+    contract.SecType = "OPT"
+    contract.Exchange = "BOX"
+    contract.Currency = contract_currency
+    #contract.LastTradeDateOrContractMonth = contract_lastTradeDay
+    contract.Strike = contract_strike
+    contract.Right = "c"
+    contract.Multiplier = "100"
+
+    contract1 = Contract()
+    contract1.Symbol = contract_symbol
+    contract1.SecType = "OPT"
+    contract1.Exchange = "BOX"
+    contract1.Currency = contract_currency
+    #contract1.LastTradeDateOrContractMonth = contract_lastTradeDay
+    contract1.Strike = contract_strike
+    contract1.Right = "p"
+    contract1.Multiplier = "100"
 
     # Example LIMIT Order
     order = Order()
